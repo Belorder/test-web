@@ -1,0 +1,10 @@
+{
+  "name": "belorder-test",
+  "version": "1.0.0",
+  "description": "Belorder project to conduct interviews.",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "moment": "^2.29.1"
+  }
+}
