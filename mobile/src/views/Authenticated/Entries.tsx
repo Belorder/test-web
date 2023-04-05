@@ -1,7 +1,7 @@
 import { EntriesStoreContext } from 'frontend/modules/entries/entry.store'
 import moment from 'moment'
 import React, { useContext, useMemo } from 'react'
-import { ActivityIndicator, StyleSheet, Text, View } from 'react-native'
+import { ActivityIndicator, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -10,6 +10,7 @@ import { CommonStyles } from '../../assets/theme/common'
 import { Link } from '../../components/Button'
 import { deviceWidth } from '../../utils/dimensions'
 import { RelativeSize } from '../../utils/relative'
+import { EntryItem } from './Entries/EntryItem'
 
 /**
  * Tracker view
@@ -34,6 +35,12 @@ export function EntriesView() {
           <Icon name="chevron-right" color={Color.black} />
         </Link>
       </View>
+
+      <ScrollView style={styles.list}>
+        {entries.map((it) => (
+          <EntryItem key={it.title} {...it} />
+        ))}
+      </ScrollView>
 
       {isLoading && <ActivityIndicator style={styles.loader} color={Color.primary} size="large" />}
     </SafeAreaView>
