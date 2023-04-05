@@ -4,7 +4,7 @@ import { UserDtoRoleEnum } from 'frontend/client'
 import { AuthStoreContext } from 'frontend/modules/auth/auth.store'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useContext } from 'react'
+import { FC, useContext } from 'react'
 import styled from 'styled-components'
 
 const { Header, Content, Footer } = Layout
@@ -15,7 +15,7 @@ const PATH_TITLE: Record<string, string> = {
   '/admin/entries': 'Entries',
 }
 
-export function AppLayout(props) {
+export const AppLayout: FC = ({ children }) => {
   const router = useRouter()
 
   const { isAuthenticated, logout, user } = useContext(AuthStoreContext)
@@ -31,7 +31,7 @@ export function AppLayout(props) {
   if (!isAuthenticated) {
     return (
       <Container className="guest">
-        <div className="content-centered">{props.children}</div>
+        <div className="content-centered">{children}</div>
       </Container>
     )
   }
@@ -56,12 +56,16 @@ export function AppLayout(props) {
             </Menu.Item>
           )}
 
-          <Dropdown className="profile-dropdown" overlay={profileMenu}>
-            <a>
-              <UserOutlined />
-              <span> {user?.username}</span>
-            </a>
-          </Dropdown>
+          <Menu.Divider />
+
+          <Menu.Item key="/profile" className="profile-dropdown">
+            <Dropdown overlay={profileMenu}>
+              <a>
+                <UserOutlined />
+                <span> {user?.username}</span>
+              </a>
+            </Dropdown>
+          </Menu.Item>
         </Menu>
       </Header>
       <Content style={{ padding: '0 50px' }}>
@@ -69,7 +73,7 @@ export function AppLayout(props) {
           <Breadcrumb.Item>Home</Breadcrumb.Item>
           <Breadcrumb.Item>{PATH_TITLE[router.asPath]}</Breadcrumb.Item>
         </Breadcrumb>
-        <div className="site-layout-content">{props.children}</div>
+        <div className="site-layout-content">{children}</div>
       </Content>
       <Footer style={{ textAlign: 'center' }}>Belorder Test ©{new Date().getFullYear()}</Footer>
     </Container>
@@ -103,7 +107,7 @@ const Container = styled(Layout)`
     margin: 16px 0 16px 24px;
   }
 
-  .profile-dropdown {
-    float: right;
-  }
+  /* .profile-dropdown {
+    textali
+  } */
 `
