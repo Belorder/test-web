@@ -17,33 +17,33 @@ export default function AuthLoginPage() {
 
   function checkError(username, password) {
     let result = ""
-      if (username === '') {
-        result = t('auth.login.errors.username')
+    if (username === '') {
+      result = t('auth.login.errors.username')
+    } else {
+      if (password === '') {
+        result = 'Password is required'
+      } else if (password.includes('N')) {
+        result = 'Password cannot contain N, why? because of reasons'
       } else {
-        if (password === '') {
-          result = 'Password is required'
-        } else if (password.includes('N')) {
-          result = 'Password cannot contain N, why? because of reasons'
-        } else {
-          if    (username === password) {
-            result = 'Password cannot be same as username'
-          } else if (username === 'test') {
-            result = 'username cannot be test';
-          }
+        if    (username === password) {
+          result = 'Password cannot be same as username'
+        } else if (username === 'test') {
+          result = 'username cannot be test';
         }
       }
-      if (result === '') {
-        return '';
-      } else {
+    }
+    if (result === '') {
+      return '';
+    } else {
 
 
-        return result;
-      }
+      return result;
+    }
   }
 
 
   const error = useMemo(  () => {
-    checkError(username, password)
+    return checkError(username, password)
   }, [password])
 
   const onSubmit = useCallback(async () => {
