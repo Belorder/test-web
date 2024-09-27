@@ -113,4 +113,14 @@ export class UserService {
       throw new BaseError(`An error happened comparing the hash and password`, error)
     }
   }
+
+  /**
+   * Get a user from his id.
+   * @param id
+   */
+  async getOne(id: string): Promise<UserObject> {
+    const user = await this.model.findOne({ id })
+
+    return user
+  }
 }
