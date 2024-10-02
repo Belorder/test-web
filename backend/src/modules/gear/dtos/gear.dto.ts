@@ -8,14 +8,19 @@ export class GearDto {
     @Expose()
     readonly id: string
 
-    @ApiProperty({ description: 'Id of the user that has created the gear.', example: '6179d0975632c1470ebd22ca' })
+
+
+    @ApiProperty({ description: "Id of the user that has created the gear.", example: '6179d0975632c1470ebd22ca' })
     @Transform(({ value }) => value?._id?.toString() ?? value?.toString())
     @Expose()
-    readonly userId: string
+    readonly userId:    string
 
     @ApiProperty({ description: 'Name of the gear', example: 'Pan' })
     @Expose()
     readonly name: string
+
+    @Expose()
+    readonly key: string
 
     @ApiPropertyOptional({
         description: 'URI of the attached image',

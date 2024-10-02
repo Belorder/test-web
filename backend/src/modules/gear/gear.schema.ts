@@ -13,6 +13,10 @@ export class GearEntity {
   @Prop({ required: true })
   name: string
 
+  // Cela devrait être unique pour tous les engrenages !!
+  @Prop()
+  key: String
+
   @Prop({})
   image: string
 
