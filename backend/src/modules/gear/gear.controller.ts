@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  NotFoundException,
   Post,
   Query,
 } from '@nestjs/common'
@@ -18,6 +19,9 @@ import { User, UserRole } from '../users/interfaces/user.interface'
 import { GearService } from './gear.service'
 import {GearDto} from "./dtos/gear.dto";
 import {UserService} from "../users/user.service";
+import { GearModel, InjectGearModel } from './gear.schema'
+
+const stringToObjectId = require('src/utils/mongodb')
 
 @Controller('api/v1/MyTools')
 @ApiTags('gear')
@@ -26,7 +30,7 @@ export class GearController {
    * Constructor.
    * @param gearService
    */
-  constructor(protected readonly gearService: GearService, protected readonly userService: UserService) {}
+  constructor(@InjectGearModel() protected readonly model: GearModel, protected readonly gearService: GearService, protected readonly userService: UserService) {}
 
   /**
    * Creates a new gear.
@@ -46,10 +50,21 @@ export class GearController {
       return false
     }
 
-    const gear = await this.gearService.createOne({
-      userId: user.id,
-      ...request,
+    // IMPORTANT!! make sure we don't create another gear with same key
+    var existant = this.getGear({ key: request.key } as any)
+    if (existant) {
+      throw new NotFoundException('Another gear exists with the same key')
+    }
+
+    const created = await this.model.create({
+      id: request.id,
+      userId: stringToObjectId(request.userId),
+      name: request.name,
+      key: request.key,
+      image: request.image,
+      date: request.date,
     })
+    let gear = created?.toObject()
 
     return plainToClass(GearDto, gear)
   }
